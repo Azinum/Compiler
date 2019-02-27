@@ -1,0 +1,10 @@
+// test2.lang
+
+func thing() {
+  return 7;
+}
+
+func start() {
+  thing();
+  return;
+}

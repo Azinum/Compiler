@@ -1,0 +1,120 @@
+// test0.lang
+asm {
+"  .subsections_via_symbols"
+"  .align 4"
+}
+
+func callPrint2() {
+asm {
+"  subl $8, %esp"  // Allocate '8' bytes (stack)
+"  movl $13, -4(%ebp)"
+"  movl $12, -8(%ebp)"
+"  calll _print2"
+"  addl $8, %esp"  // Clean stack
+}
+  return;
+}
+
+func callPrint2_2() {
+asm {
+"  pushl $1"  // 4 +
+"  pushl $2"  // 4 => 8 stack size
+"  call _print2"
+"  addl $8, %esp"
+}
+  return;
+}
+
+func callPrint2_3() {
+asm {
+"  subl $24, %esp"
+"  movl $22, -4(%ebp)"
+"  movl $23, -8(%ebp)"
+"  movl -4(%ebp), %eax"
+"  movl -8(%ebp), %ecx"
+"  movl %eax, 0(%esp)"
+"  movl %ecx, 4(%esp)"
+"  addl $24, %esp"
+}
+  return;
+}
+
+func doReturn() {
+asm "  movl $155, %eax"
+  return;   // The return value is at %eax
+}
+
+// int a = 5;
+// int b = 4 + a;
+// print2(b, a); // -> a:9, b:5
+// Order is ^ reversed atm
+func testArith() {
+  asm {
+  "  subl $8, %esp"
+  "  movl $5, -4(%ebp)" // a -> 5
+  "  movl $4, -8(%ebp)" // b -> 4
+  "  movl -8(%ebp), %eax"
+  "  addl -4(%ebp), %eax"
+  "  movl %eax, -8(%ebp)"
+  "  addl $8, %esp"
+  }
+  print2();
+  return;
+}
+
+func a() {
+asm {
+"  movl $3, -4(%ebp)"
+"  movl $5, -8(%ebp)"
+"  pushl -4(%ebp)"
+"  pushl -8(%ebp)"
+"  calll _add"
+// "  addl $8, %esp" // if using rvalue
+"  pushl %eax"
+"  calll _print1"
+"  addl $12, %esp"
+}
+  return;
+};
+
+asm {
+".globl _hey"
+"_hey:"
+"  pushl %ebp"
+"  movl %esp, %ebp"
+"  "
+"  popl %ebp"
+"  retl"
+}
+
+// if there is a math operation on const numerals:
+// optimise and calculate before code generation
+// Example:
+// int i = 5 + 5;
+// Will be optimized to:
+// int i = 10;
+// And then code will be generated:
+// movl $10, -4(%ebp)
+func start() {
+// asm {
+// "  subl $24, %esp"
+// "  movl $2, %eax"
+// "  movl $3, %ecx"
+// "  movl $4, %edx"
+// "  movl $2, (%esp)"
+// "  movl $3, 4(%esp)"
+// "  movl $4, 8(%esp)"
+// "  movl $2, -4(%ebp)"
+// "  movl $3, -8(%ebp)"
+// "  movl $4, -12(%ebp)"
+// "  calll _print3"
+// "  addl $24, %esp"
+// }
+  var a;
+  var b;
+  var c;
+
+  
+
+  return;
+}

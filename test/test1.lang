@@ -1,0 +1,19 @@
+// test1.lang
+
+// Single-line Comments
+/* Multi-
+  line comments */
+
+// Extern statement
+extern symbol;
+
+// Function definition
+func start() {
+  int a;  // Variable declaration
+  asm "movl $5, %eax"; // Inline assembly
+  asm { // Multi-line inline assembly
+    "movl $12, %eax"
+    "movl %eax, %ecx"
+  };
+  return; // Return statement (void)
+}
